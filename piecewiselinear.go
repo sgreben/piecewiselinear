@@ -1,12 +1,17 @@
 package piecewiselinear
 
 // Function is a piecewise-linear 1-dimensional function
+// X is expected to be sorted. The sortedness property is _not_ verified.
 type Function struct {
 	X []float64
 	Y []float64
 }
 
-// At returns the function's value at the given point
+// At returns the function's value at the given point.
+// Outside the domain, the function is constant at the respective boundary value.
+//
+// Time complexity: O(log(N)), where N is the number of points.
+// Space complexity: O(1)
 func (f Function) At(x float64) float64 {
 	X, Y := f.X, f.Y
 	i, j := 0, len(X)
