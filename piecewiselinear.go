@@ -1,7 +1,6 @@
 package piecewiselinear
 
 // Function is a piecewise-linear 1-dimensional function
-// X is expected to be sorted. The sortedness property is _not_ verified.
 type Function struct {
 	X []float64
 	Y []float64
@@ -9,6 +8,8 @@ type Function struct {
 
 // At returns the function's value at the given point.
 // Outside the domain, the function is constant at the respective boundary value.
+//
+// The function's X slice is expected to be sorted in ascending order. This sortedness property is _not_ verified.
 //
 // Time complexity: O(log(N)), where N is the number of points.
 // Space complexity: O(1)
