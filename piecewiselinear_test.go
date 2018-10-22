@@ -6,10 +6,10 @@ import (
 )
 
 func Example() {
-	f := Function{Y: []float64{0, 1, 0}} // "hat" function
-	f.X = Span(0, 1, len(f.Y))
+	f := Function{Y: []float64{0, 1, 0}} // range: "hat" function
+	f.X = Span(0, 1, len(f.Y))           // domain: equidistant points along X axis
 	fmt.Println(
-		f.At(0),
+		f.At(0), // f.At(x) evaluates f at x
 		f.At(0.25),
 		f.At(0.5),
 		f.At(0.75),
