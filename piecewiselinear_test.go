@@ -19,6 +19,55 @@ func Example() {
 	// 0 0.5 1 0.5 0
 }
 
+func TestFunction_Area(t *testing.T) {
+	tests := []struct {
+		name string
+		X    []float64
+		Y    []float64
+		want float64
+	}{
+		{
+			name: "empty",
+			want: 0.0,
+		},
+		{
+			name: "simple",
+			X:    []float64{0, 1},
+			Y:    []float64{0, 1},
+			want: 0.5,
+		},
+		{
+			name: "simple+1",
+			X:    []float64{0, 1},
+			Y:    []float64{1, 2},
+			want: 1.5,
+		},
+		{
+			name: "two segments",
+			X:    []float64{0, 1, 2},
+			Y:    []float64{1, 2, 2},
+			want: 3.5,
+		},
+		{
+			name: "three segments",
+			X:    []float64{0, 1, 2, 3},
+			Y:    []float64{1, 2, 2, 3},
+			want: 6,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			f := Function{
+				X: tt.X,
+				Y: tt.Y,
+			}
+			if got := f.Area(); got != tt.want {
+				t.Errorf("Function.Area() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestFunction_At(t *testing.T) {
 	tests := []struct {
 		name string
