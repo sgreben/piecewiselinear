@@ -1,3 +1,4 @@
+// Package piecewiselinear is a tiny library for linear interpolation.
 package piecewiselinear
 
 // Function is a piecewise-linear 1-dimensional function
