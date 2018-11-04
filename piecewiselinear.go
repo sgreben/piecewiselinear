@@ -8,6 +8,8 @@ type Function struct {
 }
 
 // Area returns the definite integral of the function on its domain X
+// Time complexity: O(N), where N is the number of points.
+// Space complexity: O(1)
 func (f Function) Area() (area float64) {
 	X, Y := f.X, f.Y
 	for i := 1; i < len(X); i++ {
@@ -17,6 +19,8 @@ func (f Function) Area() (area float64) {
 }
 
 // AreaUpTo returns the definite integral of the function on its domain X intersected with [-Inf, x]
+// Time complexity: O(N), where N is the number of points.
+// Space complexity: O(1)
 func (f Function) AreaUpTo(x float64) (area float64) {
 	X, Y := f.X, f.Y
 	for i := 1; i < len(X); i++ {
