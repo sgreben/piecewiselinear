@@ -14,9 +14,82 @@ func Example() {
 		f.At(0.5),
 		f.At(0.75),
 		f.At(1.0),
+		f.At(123.0),  // outside its domain X the function is constant 0
+		f.At(-123.0), //
 	)
 	// Output:
-	// 0 0.5 1 0.5 0
+	// 0 0.5 1 0.5 0 0 0
+}
+
+func TestFunction_AreaUpTo(t *testing.T) {
+	tests := []struct {
+		name string
+		X    []float64
+		Y    []float64
+		x    float64
+		want float64
+	}{
+		{
+			name: "simple",
+			X:    []float64{0, 1},
+			Y:    []float64{0, 1},
+			x:    1.0,
+			want: 0.5,
+		},
+		{
+			name: "simple+1",
+			X:    []float64{0, 1},
+			Y:    []float64{1, 2},
+			x:    0.5,
+			want: 0.75,
+		},
+		{
+			name: "three segments (1)",
+			X:    []float64{0, 1, 2, 3},
+			Y:    []float64{1, 2, 2, 3},
+			x:    2,
+			want: 3.5,
+		},
+		{
+			name: "three segments (2)",
+			X:    []float64{0, 1, 2, 3},
+			Y:    []float64{1, 2, 2, 3},
+			x:    2.5,
+			want: 4.75,
+		},
+		{
+			name: "three segments (3)",
+			X:    []float64{0, 1, 2, 3},
+			Y:    []float64{1, 2, 2, 3},
+			x:    3,
+			want: 6,
+		},
+		{
+			name: "three segments (4, outside domain)",
+			X:    []float64{0, 1, 2, 3},
+			Y:    []float64{1, 2, 2, 3},
+			x:    123,
+			want: 6,
+		},
+		{
+			name: "three segments (6, outside domain)",
+			X:    []float64{0, 1, 2, 3},
+			Y:    []float64{1, 2, 2, 3},
+			x:    -123,
+			want: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			f := Function{
+				X: tt.X,
+				Y: tt.Y,
+			}
+			if got := f.AreaUpTo(tt.x); got != tt.want {
+				t.Errorf("Function.AreaUpTo(%v) = %v, want %v", tt.x, got, tt.want)
+			}
+		})
+	}
 }
 
 func TestFunction_Area(t *testing.T) {
@@ -109,6 +182,20 @@ func TestFunction_At(t *testing.T) {
 			X:    []float64{0, 0.25, 0.5, 0.75, 1.0},
 			Y:    []float64{0, -1, 0, 1, 0},
 			x:    0.0,
+			want: 0.0,
+		},
+		{
+			name: "saw(2.5) (outside domain)",
+			X:    []float64{0, 0.25, 0.5, 0.75, 1.0},
+			Y:    []float64{0, -1, 0, 1, 0},
+			x:    2.5,
+			want: 0.0,
+		},
+		{
+			name: "saw(-2.5) (outside domain)",
+			X:    []float64{0, 0.25, 0.5, 0.75, 1.0},
+			Y:    []float64{0, -1, 0, 1, 0},
+			x:    -2.5,
 			want: 0.0,
 		},
 	}

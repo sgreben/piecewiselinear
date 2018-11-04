@@ -23,13 +23,15 @@ func main() {
     f := piecewiselinear.Function{Y:[]float64{0,1,0}} // range: "hat" function
     f.X = piecewiselinear.Span(0, 1, len(f.Y)) // domain: equidistant points along X axis
     fmt.Println(
-        f.At(0), // f.At(x) evaluates f at x
-        f.At(0.25),
-        f.At(0.5),
-        f.At(0.75),
-        f.At(1.0),
-    )
+		f.At(0), // f.At(x) evaluates f at x
+		f.At(0.25),
+		f.At(0.5),
+		f.At(0.75),
+		f.At(1.0),
+		f.At(123.0),  // outside its domain X the function is constant 0
+		f.At(-123.0), //
+	)
     // Output:
-    // 0 0.5 1 0.5 0
+    // 0 0.5 1 0.5 0 0 0
 }
 ```

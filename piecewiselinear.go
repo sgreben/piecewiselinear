@@ -15,8 +15,23 @@ func (f Function) Area() (area float64) {
 	return area
 }
 
+// AreaUpTo returns the definite integral of the function on its domain X intersected with [-Inf, x]
+func (f Function) AreaUpTo(x float64) (area float64) {
+	X, Y := f.X, f.Y
+	for i := 1; i < len(X); i++ {
+		if x < X[i] {
+			if x >= X[i-1] {
+				area += (x - X[i-1]) * (Y[i] + Y[i-1]) / 2
+			}
+			return area
+		}
+		area += (X[i] - X[i-1]) * (Y[i] + Y[i-1]) / 2
+	}
+	return area
+}
+
 // At returns the function's value at the given point.
-// Outside the domain, the function is constant at the respective boundary value.
+// Outside the domain, the function is constant at 0
 //
 // The function's X and Y slices are expected to be the same legnth. The length property is _not_ verified.
 // The function's X slice is expected to be sorted in ascending order. The sortedness property is _not_ verified.
@@ -35,10 +50,8 @@ func (f Function) At(x float64) float64 {
 		}
 	}
 	switch i {
-	case 0:
-		return Y[0]
-	case len(X):
-		return Y[len(X)-1]
+	case 0, len(X):
+		return 0
 	}
 	w := (x - X[i-1]) / (X[i] - X[i-1])
 	return (1-w)*Y[i-1] + w*Y[i]
