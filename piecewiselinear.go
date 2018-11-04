@@ -7,7 +7,8 @@ type Function struct {
 	Y []float64
 }
 
-// Area returns the definite integral of the function on its domain X
+// Area returns the definite integral of the function on its domain X.
+//
 // Time complexity: O(N), where N is the number of points.
 // Space complexity: O(1)
 func (f Function) Area() (area float64) {
@@ -18,7 +19,8 @@ func (f Function) Area() (area float64) {
 	return area
 }
 
-// AreaUpTo returns the definite integral of the function on its domain X intersected with [-Inf, x]
+// AreaUpTo returns the definite integral of the function on its domain X intersected with [-Inf, x].
+//
 // Time complexity: O(N), where N is the number of points.
 // Space complexity: O(1)
 func (f Function) AreaUpTo(x float64) (area float64) {
@@ -36,7 +38,7 @@ func (f Function) AreaUpTo(x float64) (area float64) {
 }
 
 // At returns the function's value at the given point.
-// Outside the domain, the function is constant at 0
+// Outside its domain X, the function is constant at 0.
 //
 // The function's X and Y slices are expected to be the same legnth. The length property is _not_ verified.
 // The function's X slice is expected to be sorted in ascending order. The sortedness property is _not_ verified.
