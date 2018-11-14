@@ -41,7 +41,7 @@ func TestFunction_AreaUpTo(t *testing.T) {
 			X:    []float64{0, 1},
 			Y:    []float64{1, 2},
 			x:    0.5,
-			want: 0.75,
+			want: 0.625,
 		},
 		{
 			name: "three segments (1)",
@@ -55,7 +55,7 @@ func TestFunction_AreaUpTo(t *testing.T) {
 			X:    []float64{0, 1, 2, 3},
 			Y:    []float64{1, 2, 2, 3},
 			x:    2.5,
-			want: 4.75,
+			want: 4.625,
 		},
 		{
 			name: "three segments (3)",

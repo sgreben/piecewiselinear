@@ -26,13 +26,17 @@ func (f Function) Area() (area float64) {
 func (f Function) AreaUpTo(x float64) (area float64) {
 	X, Y := f.X, f.Y
 	for i := 1; i < len(X); i++ {
+		dX := X[i] - X[i-1]
 		if x < X[i] {
 			if x >= X[i-1] {
-				area += (x - X[i-1]) * (Y[i] + Y[i-1]) / 2
+				dxX := x - X[i-1]
+				w := dxX / dX
+				y := (1-w)*Y[i-1] + w*Y[i]
+				area += dxX * (y + Y[i-1]) / 2
 			}
 			return area
 		}
-		area += (X[i] - X[i-1]) * (Y[i] + Y[i-1]) / 2
+		area += dX * (Y[i] + Y[i-1]) / 2
 	}
 	return area
 }
