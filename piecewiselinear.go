@@ -60,8 +60,16 @@ func (f Function) At(x float64) float64 {
 			j = h
 		}
 	}
-	switch i {
-	case 0, len(X):
+	if i == 0 && len(X) > 0 {
+		if x < X[0] {
+			return 0
+		}
+		if x == X[0] {
+			return Y[0]
+		}
+		return 0
+	}
+	if i == len(X) {
 		return 0
 	}
 	w := (x - X[i-1]) / (X[i] - X[i-1])

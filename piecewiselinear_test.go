@@ -157,6 +157,27 @@ func TestFunction_At(t *testing.T) {
 			want: 0.5,
 		},
 		{
+			name: "simpleNonzeroBoundaries",
+			X:    []float64{10, 20},
+			Y:    []float64{123, 456},
+			x:    10,
+			want: 123,
+		},
+		{
+			name: "simpleNonzeroBoundaries",
+			X:    []float64{10, 20},
+			Y:    []float64{123, 456},
+			x:    20,
+			want: 456,
+		},
+		{
+			name: "simpleNonzeroBoundaries",
+			X:    []float64{10, 20},
+			Y:    []float64{123, 456},
+			x:    21,
+			want: 0,
+		},
+		{
 			name: "saw(0.25)",
 			X:    []float64{0, 0.25, 0.5, 0.75, 1.0},
 			Y:    []float64{0, -1, 0, 1, 0},
