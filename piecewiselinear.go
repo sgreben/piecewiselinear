@@ -60,11 +60,11 @@ func (f Function) At(x float64) float64 {
 			j = h
 		}
 	}
-	if i == 0 && len(X) > 0 {
-		if x < X[0] {
+	if i == 0 {
+		if len(X) > 0 && x < X[0] {
 			return 0
 		}
-		if x == X[0] {
+		if len(X) > 0 && x == X[0] {
 			return Y[0]
 		}
 		return 0
