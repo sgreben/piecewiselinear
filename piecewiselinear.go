@@ -41,6 +41,16 @@ func (f Function) AreaUpTo(x float64) (area float64) {
 	return area
 }
 
+// IsInterpolatedAt returns true if x is within the given range of points, false if outside of that range
+func (f Function) IsInterpolatedAt(x float64) bool {
+	n := len(f.X)
+	if n == 0 {
+		return false
+	}
+	left, right := f.X[0], f.X[n-1]
+	return x >= left && x <= right
+}
+
 // At returns the function's value at the given point.
 // Outside its domain X, the function is constant at 0.
 //
