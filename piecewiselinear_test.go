@@ -232,3 +232,95 @@ func TestFunction_At(t *testing.T) {
 		})
 	}
 }
+
+func TestFunction_IsInterpolatedAt(t *testing.T) {
+	tests := []struct {
+		name           string
+		X              []float64
+		Y              []float64
+		x              float64
+		isInterpolated bool
+	}{
+		{
+			name:           "simple",
+			X:              []float64{0, 1},
+			Y:              []float64{0, 1},
+			x:              0.5,
+			isInterpolated: true,
+		},
+		{
+			name:           "simpleNonzeroBoundaries",
+			X:              []float64{10, 20},
+			Y:              []float64{123, 456},
+			x:              10,
+			isInterpolated: true,
+		},
+		{
+			name:           "simpleNonzeroBoundaries",
+			X:              []float64{10, 20},
+			Y:              []float64{123, 456},
+			x:              20,
+			isInterpolated: true,
+		},
+		{
+			name:           "simpleNonzeroBoundaries",
+			X:              []float64{10, 20},
+			Y:              []float64{123, 456},
+			x:              21,
+			isInterpolated: false,
+		},
+		{
+			name:           "saw(0.25)",
+			X:              []float64{0, 0.25, 0.5, 0.75, 1.0},
+			Y:              []float64{0, -1, 0, 1, 0},
+			x:              0.25,
+			isInterpolated: true,
+		},
+		{
+			name:           "saw(0.125)",
+			X:              []float64{0, 0.25, 0.5, 0.75, 1.0},
+			Y:              []float64{0, -1, 0, 1, 0},
+			x:              0.125,
+			isInterpolated: true,
+		},
+		{
+			name:           "saw(1.0)",
+			X:              []float64{0, 0.25, 0.5, 0.75, 1.0},
+			Y:              []float64{0, -1, 0, 1, 0},
+			x:              1.0,
+			isInterpolated: true,
+		},
+		{
+			name:           "saw(0.0)",
+			X:              []float64{0, 0.25, 0.5, 0.75, 1.0},
+			Y:              []float64{0, -1, 0, 1, 0},
+			x:              0.0,
+			isInterpolated: true,
+		},
+		{
+			name:           "saw(2.5) (outside domain)",
+			X:              []float64{0, 0.25, 0.5, 0.75, 1.0},
+			Y:              []float64{0, -1, 0, 1, 0},
+			x:              2.5,
+			isInterpolated: false,
+		},
+		{
+			name:           "saw(-2.5) (outside domain)",
+			X:              []float64{0, 0.25, 0.5, 0.75, 1.0},
+			Y:              []float64{0, -1, 0, 1, 0},
+			x:              -2.5,
+			isInterpolated: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			f := Function{
+				X: tt.X,
+				Y: tt.Y,
+			}
+			if got := f.IsInterpolatedAt(tt.x); got != tt.isInterpolated {
+				t.Errorf("Function.IsInterpolated() = %v, want %v", got, tt.isInterpolated)
+			}
+		})
+	}
+}
