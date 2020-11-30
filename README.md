@@ -1,6 +1,6 @@
 # piecewiselinear
 
-[![](https://godoc.org/github.com/sgreben/piecewiselinear?status.svg)](http://godoc.org/github.com/sgreben/piecewiselinear) [![](https://goreportcard.com/badge/github.com/sgreben/piecewiselinear/goreportcard)](https://goreportcard.com/report/github.com/sgreben/piecewiselinear) [![coverage](http://gocover.io/_badge/github.com/sgreben/piecewiselinear)](https://gocover.io/github.com/sgreben/piecewiselinear) [![Build Status](https://travis-ci.org/sgreben/piecewiselinear.svg?branch=master)](https://travis-ci.org/sgreben/piecewiselinear)
+[![](https://godoc.org/github.com/sgreben/piecewiselinear?status.svg)](http://godoc.org/github.com/sgreben/piecewiselinear) [![](https://goreportcard.com/badge/github.com/sgreben/piecewiselinear/goreportcard)](https://goreportcard.com/report/github.com/sgreben/piecewiselinear) [![gocover.io](https://gocover.io/_badge/github.com/sgreben/piecewiselinear)](https://gocover.io/github.com/sgreben/piecewiselinear) [![Build](https://github.com/sgreben/piecewiselinear/workflows/Build/badge.svg)](https://github.com/sgreben/piecewiselinear/actions?query=workflow%3ABuild)
 
 A tiny library for linear interpolation. `O(log(N))` per evaluation for `N` control points.
 
