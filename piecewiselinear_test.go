@@ -2,6 +2,7 @@ package piecewiselinear
 
 import (
 	"fmt"
+	"math/rand"
 	"testing"
 )
 
@@ -323,4 +324,57 @@ func TestFunction_IsInterpolatedAt(t *testing.T) {
 			}
 		})
 	}
+}
+
+func benchmarkWithKPoints(b *testing.B, k int) {
+	var f Function
+	f.Y = make([]float64, k)
+	for i := range f.Y {
+		f.Y[i] = rand.Float64()
+	}
+	f.X = Span(0, 1, len(f.Y))
+	xs := make([]float64, len(f.X))
+	for i := range f.X {
+		xs[i] = rand.Float64()
+	}
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		_ = f.At(xs[n%len(f.X)])
+	}
+}
+
+func BenchmarkAt4(b *testing.B) {
+	benchmarkWithKPoints(b, 4)
+}
+
+func BenchmarkAt8(b *testing.B) {
+	benchmarkWithKPoints(b, 8)
+}
+
+func BenchmarkAt10(b *testing.B) {
+	benchmarkWithKPoints(b, 10)
+}
+
+func BenchmarkAt100(b *testing.B) {
+	benchmarkWithKPoints(b, 100)
+}
+
+func BenchmarkAt1k(b *testing.B) {
+	benchmarkWithKPoints(b, 1_000)
+}
+
+func BenchmarkAt10k(b *testing.B) {
+	benchmarkWithKPoints(b, 10_000)
+}
+
+func BenchmarkAt100k(b *testing.B) {
+	benchmarkWithKPoints(b, 100_000)
+}
+
+func BenchmarkAt1M(b *testing.B) {
+	benchmarkWithKPoints(b, 1_000_000)
+}
+
+func BenchmarkAt10M(b *testing.B) {
+	benchmarkWithKPoints(b, 10_000_000)
 }
