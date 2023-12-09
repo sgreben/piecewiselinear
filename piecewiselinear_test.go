@@ -8,7 +8,7 @@ import (
 
 func Example() {
 	f := Function{Y: []float64{0, 1, 0}} // range: "hat" function
-	f.X = Span(0, 1, len(f.Y))           // domain: equidistant points along X axis
+	f.X = []float64{0, 0.5, 1}           // domain: equidistant points along X axis
 	fmt.Println(
 		f.At(0), // f.At(x) evaluates f at x
 		f.At(0.25),
@@ -17,9 +17,31 @@ func Example() {
 		f.At(1.0),
 		f.At(123.0),  // outside its domain X the function is constant 0
 		f.At(-123.0), //
+
+		f.Area(),
+		f.AreaUpTo(0.5),
 	)
 	// Output:
-	// 0 0.5 1 0.5 0 0 0
+	// 0 0.5 1 0.5 0 0 0 0.5 0.25
+}
+
+func ExampleUniform() {
+	f := FunctionUniform{Y: []float64{0, 1, 0}} // range: "hat" function
+	f.Xmin, f.Xmax = 0, 1                       // domain: equidistant points along X axis
+	fmt.Println(
+		f.At(0), // f.At(x) evaluates f at x
+		f.At(0.25),
+		f.At(0.5),
+		f.At(0.75),
+		f.At(1.0),
+		f.At(123.0),  // outside its domain X the function is constant 0
+		f.At(-123.0), //
+
+		f.Area(),
+		f.AreaUpTo(0.5),
+	)
+	// Output:
+	// 0 0.5 1 0.5 0 0 0 0.5 0.25
 }
 
 func TestFunction_AreaUpTo(t *testing.T) {
@@ -326,6 +348,43 @@ func TestFunction_IsInterpolatedAt(t *testing.T) {
 	}
 }
 
+func TestUniform(t *testing.T) {
+	var f Function
+	var fU FunctionUniform
+	ks := []int{2, 3, 4, 5, 8, 9, 16, 17, 32, 33, 64, 65, 128, 129, 256, 257}
+	for _, k := range ks {
+		f.Y = make([]float64, k)
+		fU.Y = f.Y
+		fU.Xmax = 1
+		fU.Xmin = 0
+		for i := range f.Y {
+			f.Y[i] = rand.Float64()
+		}
+		f.X = Span(0, 1, len(f.Y))
+		xs := make([]float64, len(f.X))
+		for i := range f.X {
+			xs[i] = rand.Float64()
+		}
+		for _, x := range xs {
+			fx := f.At(x)
+			fUx := fU.At(x)
+			if fx != fUx {
+				t.Errorf(".At(): %v != %v (expected)", fUx, fx)
+			}
+			Fx := f.AreaUpTo(x)
+			FUx := fU.AreaUpTo(x)
+			if Fx != FUx {
+				t.Errorf(".AreaUpTo(): %v != %v (expected)", FUx, Fx)
+			}
+		}
+		F := f.Area()
+		FU := fU.Area()
+		if F != FU {
+			t.Errorf(".Area(): %v != %v (expected)", F, FU)
+		}
+	}
+}
+
 func benchmarkWithKPoints(b *testing.B, k int) {
 	var f Function
 	f.Y = make([]float64, k)
@@ -340,6 +399,22 @@ func benchmarkWithKPoints(b *testing.B, k int) {
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
 		_ = f.At(xs[n%len(f.X)])
+	}
+}
+
+func benchmarkUniformWithKPoints(b *testing.B, k int) {
+	var f FunctionUniform
+	f.Y = make([]float64, k)
+	for i := range f.Y {
+		f.Y[i] = rand.Float64()
+	}
+	xs := make([]float64, len(f.Y))
+	for i := range f.Y {
+		xs[i] = rand.Float64()
+	}
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		_ = f.At(xs[n%len(f.Y)])
 	}
 }
 
@@ -377,4 +452,8 @@ func BenchmarkAt1M(b *testing.B) {
 
 func BenchmarkAt10M(b *testing.B) {
 	benchmarkWithKPoints(b, 10_000_000)
+}
+
+func BenchmarkUniformAt10M(b *testing.B) {
+	benchmarkUniformWithKPoints(b, 10_000_000)
 }
