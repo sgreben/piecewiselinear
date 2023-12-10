@@ -2,7 +2,7 @@
 
 [![](https://godoc.org/github.com/sgreben/piecewiselinear?status.svg)](http://godoc.org/github.com/sgreben/piecewiselinear) [![](https://goreportcard.com/badge/github.com/sgreben/piecewiselinear)](https://goreportcard.com/report/github.com/sgreben/piecewiselinear)
 
-A tiny library for linear interpolation. `O(log(N))` per evaluation for `N` control points.
+A tiny library for linear interpolation. `O(log(N))` per evaluation for `N` control points (and [`O(1)` in a special case](#fast-special-case)).
 
 ```go
 import "github.com/sgreben/piecewiselinear"
